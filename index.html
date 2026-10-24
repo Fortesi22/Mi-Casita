@@ -11,18 +11,22 @@ h1{font-size:21px;margin:0}.sub{font-size:12px;color:#8c7184}header button,.pill
 main{max-width:1050px;margin:auto;padding:12px}.tip{font-size:13px;text-align:center;margin:0 0 10px}
 .room{position:relative;width:100%;aspect-ratio: 1.48;overflow:hidden;border:7px solid #e7a5ba;border-radius:24px;background:linear-gradient(#fbe0e6 0 71%,#dfb997 71%);box-shadow:0 10px 28px #9a718447;touch-action:none;user-select:none}
 .room:before{content:"";position:absolute;inset:0 0 29%;background:repeating-linear-gradient(90deg,transparent 0 55px,#ffffff2c 56px 58px);pointer-events:none}
-.floor{position:absolute;top:71%;bottom:0;width:100%;background:repeating-linear-gradient(0deg,#d5a980 0 2px,transparent 2px 45px),repeating-linear-gradient(90deg,#d5a980 0 2px,transparent 2px 90px)}
-.window{position:absolute;left:8%;top:10%;width:23%;height:31%;background:linear-gradient(#a9d9ed,#def3f6);border:9px solid #fff;border-radius:48% 48% 8px 8px;box-shadow:0 4px 0 #d59ba9}
-.window:after{content:"";position:absolute;top:0;bottom:0;left:48%;border-left:6px solid #fff}.sun{position:absolute;left:15%;top:17%;font-size:30px}
-.rug{position:absolute;left:31%;top:77%;width:42%;height:17%;background:#eab5ce;border-radius:50%;border:5px solid #fff2f6}
-.obj{position:absolute;transform:translate(-50%,-50%);display:grid;place-items:center;touch-action:none;cursor:grab;filter:drop-shadow(2px 7px 2px #6d4e5140)}
+.floor{position:absolute;z-index:0;pointer-events:none;top:71%;bottom:0;width:100%;background:repeating-linear-gradient(0deg,#d5a980 0 2px,transparent 2px 45px),repeating-linear-gradient(90deg,#d5a980 0 2px,transparent 2px 90px),linear-gradient(#e8c8a9,#dcb38d)}
+.window{position:absolute;z-index:0;pointer-events:none;left:8%;top:10%;width:23%;height:31%;background:linear-gradient(155deg,#8ec9e8,#dff5fa 75%);border:9px solid #fff;border-radius:48% 48% 8px 8px;box-shadow:0 4px 0 #d59ba9}
+.window:after{content:"";position:absolute;top:0;bottom:0;left:48%;border-left:6px solid #fff}.sun{position:absolute;z-index:0;pointer-events:none;left:15%;top:17%;font-size:30px}
+.rug{position:absolute;z-index:0;pointer-events:none;left:31%;top:77%;width:42%;height:17%;background:radial-gradient(ellipse at 50% 40%,#f4c8de,#dfa4c5);border-radius:50%;border:5px solid #fff2f6}
+#objects{position:absolute;inset:0;z-index:2;pointer-events:none}
+.obj{position:absolute;pointer-events:none;transform:translate(-50%,-50%);display:grid;place-items:center;touch-action:none;cursor:grab;filter:drop-shadow(2px 7px 2px #6d4e5140)}
 .obj.dragging{cursor:grabbing;z-index:50!important;filter:drop-shadow(0 10px 6px #6d4e5160)}
-.obj svg{height:100%;width:100%;overflow:visible}
+.obj svg{height:100%;width:100%;overflow:visible;pointer-events:none}
+.obj svg > *{pointer-events:visiblePainted;touch-action:none;cursor:grab}
+.obj svg > ellipse[fill="#775d6a44"]{pointer-events:none}
+.obj.selected{filter:drop-shadow(0 0 5px #8b5db7) drop-shadow(2px 7px 2px #6d4e5140)}
 @keyframes waveArm{0%,100%{transform:rotate(0deg)}25%,75%{transform:rotate(-35deg)}50%{transform:rotate(15deg)}} 
 @keyframes petBounce{0%,100%{transform:translate(-50%,-50%)}40%{transform:translate(-50%,-63%)}} 
 .obj.waving .arm-wave{transform-origin:72px 51px;animation:waveArm .35s ease-in-out 4}
 .obj.playing{animation:petBounce .45s ease-in-out 3}
-.obj.selected{outline:3px dashed #8b5db7;outline-offset:3px;border-radius:10px}
+.obj.selected{outline:2px dashed #8b5db7;outline-offset:0;border-radius:10px}
 .panel{background:#fff;border-radius:20px;padding:14px;margin-top:12px;box-shadow:0 3px 12px #ae829023}
 .tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.tabs button{border:0;border-radius:20px;padding:10px 13px;background:#f4eef4;font-weight:700;color:#73566e}.tabs button.active{background:#8b65ae;color:white}
 .controls{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.controls label{display:flex;align-items:center;gap:6px;font-size:14px}
@@ -33,7 +37,7 @@ select{padding:8px;border:2px solid #ead9e8;border-radius:12px;background:white;
 @media(max-width:600px){header{padding:9px}h1{font-size:18px}.room{border-width:4px;border-radius:16px;aspect-ratio:1.08}.panel{padding:11px}.tip{font-size:12px}.obj{min-width:28px;min-height:28px}}
 </style>
 </head><body>
-<header><div><h1>🏡 Mi Casita</h1><div class="sub">Nuestro primer mundo · versión 0.2</div></div><button id="reset">↺ Reiniciar</button></header>
+<header><div><h1>🏡 Mi Casita</h1><div class="sub">Nuestro primer mundo · versión 0.3</div></div><button id="reset">↺ Reiniciar</button></header>
 <main><p class="tip">👆 Arrastrá los muebles, el personaje y la mascota. Tocá un objeto para seleccionarlo.</p>
 <section class="room" id="room" aria-label="Habitación interactiva"><div class="floor"></div><div class="window"></div><div class="sun">☀️</div><div class="rug"></div><div id="objects"></div></section>
 <section class="panel">
@@ -46,7 +50,7 @@ select{padding:8px;border:2px solid #ead9e8;border-radius:12px;background:white;
 <div id="pet" class="controls hidden"><label>Animal <select id="animal"><option value="cat">🐱 Gato</option><option value="dog">🐶 Perro</option></select></label><label>Color <select id="petcolor"><option value="#e7b77f">Caramelo</option><option value="#f5f0e7">Blanco</option><option value="#66616c">Gris</option><option value="#b97857">Marrón</option></select></label><button class="action" id="petplay">❤️ Acariciar</button></div>
 <div id="furniture" class="controls hidden"><button class="action" data-add="plant">🪴 Planta</button><button class="action" data-add="lamp">💡 Lámpara</button><button class="action" data-add="chair">🪑 Silla</button><button class="action" data-add="toy">🧸 Peluche</button><button class="action" id="duplicate">📋 Duplicar seleccionado</button><button class="action" id="front">⬆️ Traer adelante</button><button class="action" id="back">⬇️ Enviar atrás</button><button class="action" id="remove">🗑️ Quitar seleccionado</button></div>
 <div id="room-controls" class="controls hidden"><label>Pared <select id="wall"><option value="#fbe0e6">Rosa</option><option value="#e0d8f7">Lavanda</option><option value="#d7f1e7">Menta</option><option value="#f8e9bb">Vainilla</option><option value="#d9eafb">Celeste</option></select></label><span class="pill">✓ Guardado automático</span></div>
-<div class="note">Cada cambio se guarda automáticamente en este dispositivo. No usa cuentas ni servidores. Borrar datos del navegador elimina el progreso.</div>
+<div class="note">Cada cambio se guarda automáticamente en este dispositivo, incluso al actualizar de la versión 0.2 a la 0.3. No usa cuentas ni servidores. Borrar datos del navegador elimina el progreso.</div>
 </section></main><div id="toast" class="toast" role="status"></div>
 <script>
 const $=id=>document.getElementById(id),KEY="mi-casita-v01";
@@ -64,7 +68,7 @@ chair:`<rect x="26" y="10" width="48" height="55" rx="9" fill="#b6a4db" stroke="
 toy:`<circle cx="35" cy="24" r="13" fill="#c6a0d9"/><circle cx="65" cy="24" r="13" fill="#c6a0d9"/><circle cx="50" cy="39" r="26" fill="#d8b5e5"/><ellipse cx="50" cy="77" rx="27" ry="22" fill="#d8b5e5"/><circle cx="41" cy="37" r="3"/><circle cx="59" cy="37" r="3"/><ellipse cx="50" cy="47" rx="6" ry="4" fill="#a9778b"/>`};return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">${shapes[type]||shapes.toy}</svg>`}
 function store(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch{notify("⚠️ No se pudo guardar en este navegador")}}
 function render(){const root=$("objects");root.innerHTML="";const room=$("room");room.style.background=`linear-gradient(${state.wall} 0 71%,#dfb997 71%)`;for(const item of state.items){const el=document.createElement("div");el.className="obj"+(selected===item.id?" selected":"");el.dataset.id=item.id;el.style.cssText=`left:${item.x}%;top:${item.y}%;width:${item.w}%;height:${item.h}%;z-index:${item.z??Math.round(item.y)}`;el.innerHTML=svg(item.type);root.append(el);el.addEventListener("pointerdown",start)}["hair","shirt","skin","animal","petcolor","wall"].forEach(k=>$(k).value=state[k])}
-function start(e){if(e.button!==0)return;const el=e.currentTarget,id=el.dataset.id;selected=id;document.querySelectorAll(".obj").forEach(x=>x.classList.toggle("selected",x.dataset.id===id));const item=state.items.find(x=>x.id===id);drag={id,px:e.clientX,py:e.clientY,x:item.x,y:item.y};el.setPointerCapture(e.pointerId);el.classList.add("dragging");el.addEventListener("pointermove",move);el.addEventListener("pointerup",end,{once:true});el.addEventListener("pointercancel",end,{once:true})}
+function start(e){if(e.button!==0)return;const el=e.currentTarget,id=el.dataset.id;e.preventDefault();selected=id;document.querySelectorAll(".obj").forEach(x=>x.classList.toggle("selected",x.dataset.id===id));const item=state.items.find(x=>x.id===id);drag={id,px:e.clientX,py:e.clientY,x:item.x,y:item.y};el.setPointerCapture(e.pointerId);el.classList.add("dragging");el.addEventListener("pointermove",move);el.addEventListener("pointerup",end,{once:true});el.addEventListener("pointercancel",end,{once:true})}
 function move(e){if(!drag)return;const rect=$("room").getBoundingClientRect(),item=state.items.find(x=>x.id===drag.id);item.x=Math.max(item.w/2,Math.min(100-item.w/2,drag.x+(e.clientX-drag.px)/rect.width*100));item.y=Math.max(item.h/2,Math.min(100-item.h/2,drag.y+(e.clientY-drag.py)/rect.height*100));e.currentTarget.style.left=item.x+"%";e.currentTarget.style.top=item.y+"%";e.currentTarget.style.zIndex=50}
 function end(e){e.currentTarget.classList.remove("dragging");e.currentTarget.removeEventListener("pointermove",move);drag=null;store();render()}
 let toastTimer;function notify(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),1900)}
