@@ -1,0 +1,1 @@
+Mi Casita 0.6: PRUEBA ARTISTICA INDEPENDIENTE. No reemplaza guardado v0.5. Subir los cinco archivos (index.html, habitacion.png, cama.png, estante.png, escritorio.png) juntos a GitHub Pages. Los objetos se extrajeron automáticamente de una lámina compuesta; pueden presentar restos de fondo o bordes imperfectos. No se promete calidad final.
