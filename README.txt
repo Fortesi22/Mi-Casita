@@ -1,1 +1,0 @@
-Mi Casita 0.5 - habitación piloto inspirada en la foto. Subí index.html y habitacion.svg juntos a la raíz de GitHub Pages. Botón Habitación piloto crea copia local de partida anterior. Ilustración SVG y muebles separados. Versión experimental, pendiente validación en Android.
